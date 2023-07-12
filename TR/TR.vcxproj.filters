@@ -44,7 +44,7 @@
     <ClCompile Include="Dirt.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="GamePlay.cpp">
+    <ClCompile Include="MainRoop.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -124,7 +124,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Dirt.h" />
-    <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="MainRoop.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
 </Project>

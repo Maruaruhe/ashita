@@ -1,7 +1,7 @@
 #pragma once
-#include "GamePlay.h"
+#include "MainRoop.h"
 
 const int kWindowWidth = 1280;
 const int kWindowHeigth = 720;
 
-GamePlay* game = new GamePlay;
+MainRoop* game = new MainRoop;

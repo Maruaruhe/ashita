@@ -15,5 +15,5 @@ void Dirt::Update() {
 	mVelocity.y += mGravity/20.0f;
 }
 void Dirt::Draw() {
-	Novice::DrawEllipse(int(mPosition.x), int(mPosition.y), int(mRadius), int(mRadius), 0.0f, GREEN, kFillModeSolid);
+	Novice::DrawEllipse(int(mPosition.x), int(mPosition.y), int(mRadius), int(mRadius), 0.0f, 0x8D6449FF, kFillModeSolid);
 }

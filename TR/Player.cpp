@@ -13,7 +13,7 @@ void Player::Update() {
 	Jump();
 }
 void Player::Draw() {
-	Novice::DrawLine(0, mFloor, 1280, mFloor, WHITE);
+	Novice::DrawLine(0, mFloor, 1280, mFloor, 0x8D6449FF);
 	Novice::DrawBox(mPosition.x-10, mPosition.y - 100, 20, 100, 0.0f, WHITE, kFillModeSolid);
 }
 void Player::Jump() {

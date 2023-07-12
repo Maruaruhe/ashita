@@ -9,7 +9,7 @@
 
 #define COUNT 31
 
-class GamePlay
+class MainRoop
 {
 public:
 	void Initialize();

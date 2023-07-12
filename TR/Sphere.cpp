@@ -67,7 +67,7 @@ void Sphere::Update() {
 
 
 void Sphere::Draw() {
-	Novice::DrawLine(0, mFloor, 1280, mFloor, WHITE);
+	Novice::DrawLine(0, mFloor, 1280, mFloor, 0x8D6449FF);
 	//if (mIsShot) {
 		Novice::DrawEllipse(int(mPosition.x), int(mPosition.y), int(mRadius), int(mRadius), 0.0f, WHITE, kFillModeSolid);
 	//}

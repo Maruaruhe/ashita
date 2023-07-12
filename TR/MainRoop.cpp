@@ -1,7 +1,7 @@
-#include "GamePlay.h"
+#include "MainRoop.h"
 #include <Novice.h>
 
-void GamePlay::Initialize() {
+void MainRoop::Initialize() {
 	sphere = new Sphere;
 	sphere->Initialize();
 	player = new Player;
@@ -15,20 +15,20 @@ void GamePlay::Initialize() {
 	mDirtMass = 10.0f;
 }
 
-void GamePlay::sphereInitialize() {
+void MainRoop::sphereInitialize() {
 	sphere->Initialize();
 }
 
-void GamePlay::dirtInitialize() {
+void MainRoop::dirtInitialize() {
 	for (int i = 0; i < COUNT; i++) {
 		dirt[i]->Initialize();
 	}
 }
 
-void GamePlay::Update() {
+void MainRoop::Update() {
 	//imgui
 	ImGui();
-	//update
+	//scene
 	if (Novice::CheckHitKey(DIK_1)) {
 		scene = sphereScene;
 		sphere->Initialize();
@@ -37,6 +37,12 @@ void GamePlay::Update() {
 		scene = playerScene;
 		player->Initialize();
 	}
+
+	if (Novice::CheckHitKey(DIK_R)) {
+		Initialize();
+	}
+
+	//update
 	switch (scene) {
 	case sphereScene:
 		sphere->SetGravity(mGravity);
@@ -56,7 +62,7 @@ void GamePlay::Update() {
 	Hit();
 }
 
-void GamePlay::Draw() {
+void MainRoop::Draw() {
 	switch (scene) {
 	case sphereScene:
 		sphere->Draw();
@@ -70,7 +76,7 @@ void GamePlay::Draw() {
 	}
 }
 
-void GamePlay::Hit() {
+void MainRoop::Hit() {
 	switch (scene) {
 	case sphereScene:
 		if (sphere->mIsHit && sphere->mPosition.y != 360.0f) {
@@ -124,7 +130,7 @@ void GamePlay::Hit() {
 	}
 }
 
-float GamePlay::GetTheta() {
+float MainRoop::GetTheta() {
 	Vector2 delta;
 	if (sphere->mIsHit) {
 		delta.x = sphere->mCurrentPosition.x - sphere->mBeforePosition.x;
@@ -143,7 +149,7 @@ float GamePlay::GetTheta() {
 	return 0.0f;
 }
 
-Vector2 GamePlay::GetSpeed() {
+Vector2 MainRoop::GetSpeed() {
 	Vector2 speed;
 	float theta = GetTheta();
 
@@ -154,7 +160,7 @@ Vector2 GamePlay::GetSpeed() {
 	return speed;
 }
 
-void GamePlay::ImGui() {
+void MainRoop::ImGui() {
 	ImGui::Begin("Window");
 	ImGui::DragFloat("Gravity", &mGravity, 0.01f);
 	ImGui::DragFloat("sphereMass", &mSphereMass, 0.01f);
