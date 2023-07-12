@@ -10,6 +10,12 @@ public:
 	void Draw();
 	void Shot();
 
+	void SetGravity(float gravity) { mGravity = gravity; }
+	void SetMass(float mass) { mMass = mass; }
+
+	float GetGravity() { return mGravity; }
+	float GetMass() { return mMass; }
+
 	Vector2 mPosition;
 	Vector2 mBeforePosition;
 	Vector2 mCurrentPosition;
@@ -23,6 +29,8 @@ public:
 	int py;
 
 	float mGravity;
+	float mMass;
+
 	bool mIsShot;
 	bool mIsHit;
 	int mFloor;

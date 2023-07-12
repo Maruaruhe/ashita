@@ -7,6 +7,7 @@ void Dirt::Initialize() {
 	mFirstVelocity = {};
 	mRadius = 3;
 	mGravity = 9.8f;
+	mMass = 10.0f;
 	mFlame = 0;
 }
 void Dirt::Update() {

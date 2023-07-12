@@ -1,7 +1,6 @@
 #include <Novice.h>
 #include "main.h"
 #include <cstdlib>
-#include <ctime>
 
 const char kWindowTitle[] = "学籍番号";
 

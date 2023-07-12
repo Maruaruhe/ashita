@@ -8,6 +8,7 @@ void Sphere::Initialize() {
 	mIsShot = false;
 	mRadius = 30.0f;
 	mGravity = 9.8f;
+	mMass = 10.0f;
 	mFloor = 720 - 30;
 	mFlame = 0;
 }

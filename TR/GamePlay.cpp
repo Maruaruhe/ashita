@@ -1,58 +1,128 @@
 #include "GamePlay.h"
+#include <Novice.h>
+
 void GamePlay::Initialize() {
 	sphere = new Sphere;
 	sphere->Initialize();
-	for (int i = 0; i < DIRTCOUNT; i++) {
+	player = new Player;
+	player->Initialize();
+	for (int i = 0; i < COUNT; i++) {
 		dirt[i] = new Dirt;
 		dirt[i]->Initialize();
 	}
+	mGravity = 9.8f;
+	mSphereMass = 10.0f;
+	mDirtMass = 10.0f;
 }
 
 void GamePlay::sphereInitialize() {
 	sphere->Initialize();
 }
+
 void GamePlay::dirtInitialize() {
-	for (int i = 0; i < DIRTCOUNT; i++) {
+	for (int i = 0; i < COUNT; i++) {
 		dirt[i]->Initialize();
 	}
 }
 
 void GamePlay::Update() {
+	//imgui
 	ImGui();
-	sphere->Update();
-	for (int i = 0; i < DIRTCOUNT; i++) {
+	//update
+	if (Novice::CheckHitKey(DIK_1)) {
+		scene = sphereScene;
+		sphere->Initialize();
+	}
+	if (Novice::CheckHitKey(DIK_2)) {
+		scene = playerScene;
+		player->Initialize();
+	}
+	switch (scene) {
+	case sphereScene:
+		sphere->SetGravity(mGravity);
+		sphere->SetMass(mSphereMass);
+		sphere->Update();
+		break;
+	case playerScene:
+		player->Update();
+		break;
+	}
+	for (int i = 0; i < COUNT; i++) {
+		dirt[i]->SetGravity(mGravity);
+		dirt[i]->SetMass(mDirtMass);
 		dirt[i]->Update();
 	}
-
-	if (sphere->mIsHit && sphere->mPosition.y != 360.0f) {
-		dirtInitialize();
-		for (int i = 0; i < DIRTCOUNT; i++) {
-			dirt[i]->mPosition.x = sphere->mPosition.x;
-			dirt[i]->mPosition.y = sphere->mPosition.y;
-		}
-		Vector2 spd;
-		spd = GetSpeed();
-
-		for (int i = 0; i < DIRTCOUNT; i++) {
-			dirt[i]->mVelocity.x = spd.x;
-			dirt[i]->mVelocity.y = spd.y;
-		}
-	}
-
+	//Hit
+	Hit();
 }
 
 void GamePlay::Draw() {
-	sphere->Draw();
-	for (int i = 0; i < DIRTCOUNT; i++) {
+	switch (scene) {
+	case sphereScene:
+		sphere->Draw();
+		break;
+	case playerScene:
+		player->Draw();
+		break;
+	}
+	for (int i = 0; i < COUNT; i++) {
 		dirt[i]->Draw();
 	}
 }
 
 void GamePlay::Hit() {
+	switch (scene) {
+	case sphereScene:
+		if (sphere->mIsHit && sphere->mPosition.y != 360.0f) {
+			dirtInitialize();
+			for (int i = 0; i < COUNT; i++) {
+				dirt[i]->mPosition.x = sphere->mPosition.x;
+				dirt[i]->mPosition.y = sphere->mPosition.y;
 
+				num[i].x = rand() % 25 - 25;
+				num[i].y = rand() % 30 - 30;
+			}
+			Vector2 spd;
+			spd = GetSpeed();
+
+			for (int i = 0; i < COUNT; i++) {
+				if (i <= COUNT / 2) {
+					dirt[i]->mVelocity.x = spd.x + num[i].x * 0.1;
+					dirt[i]->mVelocity.y = spd.y - num[i].y * 0.2;
+				}
+				else {
+					dirt[i]->mVelocity.x = spd.x - num[i].x * 0.1;
+					dirt[i]->mVelocity.y = spd.y - num[i].y * 0.2;
+				}
+			}
+		}
+		break;
+	case playerScene:
+		if (player->GetFlag()) {
+			dirtInitialize();
+			for (int i = 0; i < COUNT; i++) {
+				dirt[i]->mPosition.x = player->GetPosition().x;
+				dirt[i]->mPosition.y = player->GetPosition().y - 5;
+
+
+				num[i].x = rand() % 25 - 25;
+				num[i].y = rand() % 30 - 30;
+			}
+
+			for (int i = 0; i < COUNT; i++) {
+				if (i <= COUNT / 2) {
+					dirt[i]->mVelocity.x = 0 + num[i].x * 0.1;
+					dirt[i]->mVelocity.y = -10 - num[i].y * 0.2;
+				}
+				else {
+					dirt[i]->mVelocity.x = 0 - num[i].x * 0.1;
+					dirt[i]->mVelocity.y = -10 - num[i].y * 0.2;
+				}
+			}
+		}
+		break;
+	}
 }
-
-
 
 float GamePlay::GetTheta() {
 	Vector2 delta;
@@ -76,16 +146,18 @@ float GamePlay::GetTheta() {
 Vector2 GamePlay::GetSpeed() {
 	Vector2 speed;
 	float theta = GetTheta();
-	speed.x = theta * 5;
-	speed.y = -(sphere->mVelocity.y) / 3;
+
+	float mass = (mSphereMass / mDirtMass);
+
+	speed.x = theta * 5 * mass;
+	speed.y = -(sphere->mVelocity.y) * mass / 3;
 	return speed;
 }
 
 void GamePlay::ImGui() {
 	ImGui::Begin("Window");
-		ImGui::DragFloat("sGravity", &sphere->mGravity, 0.01f);
-		/*ImGui::DragFloat("dGravity", &dirt[i]->mGravity, 0.01f);*/
-		/*ImGui::DragFloat("SphereMass", &sphereMass, 0.01f);
-		ImGui::DragFloat("DirtMass", &dirtMass, 0.01f);*/
+	ImGui::DragFloat("Gravity", &mGravity, 0.01f);
+	ImGui::DragFloat("sphereMass", &mSphereMass, 0.01f);
+	ImGui::DragFloat("dirtMass", &mDirtMass, 0.01f);
 	ImGui::End();
 }
